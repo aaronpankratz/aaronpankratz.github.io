@@ -1,69 +1,1008 @@
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Aaron Pankratz</title>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/purecss@2.0.6/build/pure-min.css"
-      integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css"
-    />
-    <style>
-      /*
-When setting the primary font stack, apply it to the Pure grid units along
-with "html", "button", "input", "select", and "textarea". Pure Grids use
-specific font stacks to ensure the greatest OS/browser compatibility.
-*/
-      html,
-      button,
-      input,
-      select,
-      textarea,
-      .pure-g [class*="pure-u"] {
-        /* Set your content font stack here: */
-        font-family: Arial, Helvetica, sans-serif;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aaron Pankratz — Software Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=IBM+Plex+Mono:wght@300;400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #F5F0E6;
+      --paper:       #EDE7D8;
+      --ink:         #0C0B14;
+      --ink-mid:     #3C3A4A;
+      --ink-faint:   #908EA0;
+      --rule:        #C8C0AD;
+      --accent:      #B84829;
+      --accent-pale: #F2D9CC;
+
+      --serif:  'Cormorant Garant', Georgia, serif;
+      --sc:     'Cormorant SC', Georgia, serif;
+      --mono:   'IBM Plex Mono', 'Courier New', monospace;
+      --sans:   'DM Sans', system-ui, sans-serif;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Subtle grain texture */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* ─── NAV ─────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      background: rgba(245, 240, 230, 0.88);
+      backdrop-filter: blur(14px) saturate(1.4);
+      border-bottom: 1px solid var(--rule);
+      transition: box-shadow 0.3s;
+    }
+
+    nav.scrolled { box-shadow: 0 2px 24px rgba(12,11,20,0.06); }
+
+    .nav-brand {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ─── HERO ────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 9rem 2.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ghost letterform in background */
+    .hero-ghost {
+      position: absolute;
+      bottom: -0.08em;
+      left: -0.03em;
+      font-family: var(--sc);
+      font-size: clamp(9rem, 20vw, 22rem);
+      font-weight: 600;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--rule);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.02em;
+      animation: ghostFade 1.2s ease both;
+    }
+
+    @keyframes ghostFade {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 860px;
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      animation: slideUp 0.8s 0.1s ease both;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 2.5rem;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-name {
+      font-family: var(--sc);
+      font-size: clamp(3.8rem, 9.5vw, 9.5rem);
+      font-weight: 300;
+      line-height: 0.94;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 2.5rem;
+      animation: slideUp 0.8s 0.2s ease both;
+    }
+
+    .hero-bio {
+      max-width: 500px;
+      font-size: 1.05rem;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      font-weight: 300;
+      margin-bottom: 2.75rem;
+      animation: slideUp 0.8s 0.3s ease both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      animation: slideUp 0.8s 0.4s ease both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* CTA buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.8rem 1.6rem;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      transition: background 0.22s, color 0.22s, border-color 0.22s;
+    }
+
+    .btn:hover { background: var(--ink); color: var(--bg); }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    /* Hero stats */
+    .hero-stats {
+      position: absolute;
+      bottom: 3.5rem;
+      right: 2.5rem;
+      z-index: 2;
+      display: flex;
+      gap: 3rem;
+      animation: slideUp 0.8s 0.5s ease both;
+    }
+
+    .stat { text-align: right; }
+
+    .stat-num {
+      font-family: var(--sc);
+      font-size: 2.6rem;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-top: 0.3rem;
+    }
+
+    /* Scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: 3.5rem;
+      left: 2.5rem;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      animation: slideUp 0.8s 0.6s ease both;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 2.5rem;
+      background: var(--rule);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--accent);
+      animation: scrollDown 1.8s 1s ease-in-out infinite;
+    }
+
+    @keyframes scrollDown {
+      0%   { top: -100%; }
+      100% { top: 100%; }
+    }
+
+    /* ─── SECTION STRUCTURE ───────────────────────── */
+    section {
+      padding: 6.5rem 2.5rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .s-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.25rem;
+      margin-bottom: 4rem;
+    }
+
+    .s-num {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-faint);
+    }
+
+    .s-title {
+      font-family: var(--serif);
+      font-size: clamp(1.9rem, 3.5vw, 3rem);
+      font-weight: 300;
+      letter-spacing: -0.015em;
+      line-height: 1.15;
+      color: var(--ink);
+    }
+
+    /* ─── ABOUT ───────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .pullquote {
+      position: sticky;
+      top: 6rem;
+    }
+
+    .pullquote-text {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(1.45rem, 2.2vw, 2rem);
+      font-weight: 300;
+      line-height: 1.5;
+      color: var(--ink);
+      padding-left: 1.75rem;
+      position: relative;
+    }
+
+    .pullquote-text::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0.2em; bottom: 0.2em;
+      width: 3px;
+      background: var(--accent);
+    }
+
+    .pullquote-source {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-top: 1.5rem;
+      padding-left: 1.75rem;
+    }
+
+    .about-body p {
+      font-size: 0.96rem;
+      color: var(--ink-mid);
+      line-height: 1.9;
+      margin-bottom: 1.2rem;
+    }
+
+    .about-body p:last-child { margin-bottom: 0; }
+
+    /* ─── DOMAINS GRID ────────────────────────────── */
+    .domain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      background: var(--rule);
+      gap: 1px;
+      border: 1px solid var(--rule);
+      margin-top: 0.5rem;
+    }
+
+    .domain-cell {
+      background: var(--bg);
+      padding: 1.75rem 1.5rem;
+      transition: background 0.2s;
+      cursor: default;
+    }
+
+    .domain-cell:hover { background: var(--paper); }
+
+    .domain-num {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 0.65rem;
+    }
+
+    .domain-name {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    /* ─── DARK STRIPE ─────────────────────────────── */
+    .dark-stripe {
+      background: var(--ink);
+      padding: 6.5rem 2.5rem;
+    }
+
+    .dark-stripe .s-title { color: #F5F0E6; }
+    .dark-stripe .s-num   { color: rgba(245,240,230,0.25); }
+
+    .dark-sub {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: rgba(245,240,230,0.4);
+      margin: -2.5rem 0 2rem 0;
+    }
+
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.67rem;
+      letter-spacing: 0.07em;
+      padding: 0.45rem 1rem;
+      border: 1px solid rgba(245,240,230,0.15);
+      color: rgba(245,240,230,0.6);
+      transition: border-color 0.2s, color 0.2s;
+      cursor: default;
+    }
+
+    .tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ─── WORKING STYLE ───────────────────────────── */
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+    }
+
+    .principle {
+      background: var(--bg);
+      padding: 2rem 1.75rem;
+      transition: background 0.2s;
+    }
+
+    .principle:hover { background: var(--paper); }
+
+    .principle-icon {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .principle-name {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+
+    .principle-desc {
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      line-height: 1.65;
+    }
+
+    /* ─── STRENGTHS ───────────────────────────────── */
+    .strength-row {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr auto;
+      align-items: center;
+      gap: 2rem;
+      padding: 1.8rem 0;
+      border-bottom: 1px solid var(--rule);
+      transition: background 0.18s;
+    }
+
+    .strength-row:first-of-type { border-top: 1px solid var(--rule); }
+
+    .strength-n {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+    }
+
+    .strength-name {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.2rem;
+    }
+
+    .strength-desc {
+      font-size: 0.84rem;
+      color: var(--ink-faint);
+      line-height: 1.55;
+    }
+
+    .strength-badge {
+      font-family: var(--mono);
+      font-size: 0.56rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.28rem 0.7rem;
+      background: var(--accent-pale);
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    /* ─── WRITING ─────────────────────────────────── */
+    .writing-link {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      padding: 2rem 2rem;
+      border: 1px solid var(--rule);
+      text-decoration: none;
+      color: inherit;
+      max-width: 580px;
+      transition: border-color 0.22s, background 0.22s;
+    }
+
+    .writing-link:hover {
+      border-color: var(--accent);
+      background: var(--paper);
+    }
+
+    .writing-glyph {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 2.4rem;
+      color: var(--accent);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .writing-meta {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.35rem;
+    }
+
+    .writing-title {
+      font-family: var(--serif);
+      font-size: 1.45rem;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.25;
+    }
+
+    .writing-arrow {
+      margin-left: auto;
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      color: var(--ink-faint);
+      flex-shrink: 0;
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    .writing-link:hover .writing-arrow {
+      transform: translateX(5px);
+      color: var(--accent);
+    }
+
+    /* ─── FOOTER ──────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2.5rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-name {
+      font-family: var(--sc);
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--ink-mid);
+    }
+
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+
+    .footer-year {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-faint);
+    }
+
+    /* ─── SCROLL ANIMATIONS ───────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger children */
+    .stagger > * { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .stagger.in > *:nth-child(1)  { opacity: 1; transform: none; transition-delay: 0.05s; }
+    .stagger.in > *:nth-child(2)  { opacity: 1; transform: none; transition-delay: 0.12s; }
+    .stagger.in > *:nth-child(3)  { opacity: 1; transform: none; transition-delay: 0.19s; }
+    .stagger.in > *:nth-child(4)  { opacity: 1; transform: none; transition-delay: 0.26s; }
+    .stagger.in > *:nth-child(5)  { opacity: 1; transform: none; transition-delay: 0.33s; }
+    .stagger.in > *:nth-child(6)  { opacity: 1; transform: none; transition-delay: 0.40s; }
+    .stagger.in > *:nth-child(7)  { opacity: 1; transform: none; transition-delay: 0.47s; }
+    .stagger.in > *:nth-child(8)  { opacity: 1; transform: none; transition-delay: 0.54s; }
+
+    /* ─── RESPONSIVE ──────────────────────────────── */
+    @media (max-width: 800px) {
+      nav { padding: 1rem 1.25rem; }
+
+      .nav-links { display: none; }
+
+      .hero { padding: 7rem 1.25rem 4rem; }
+
+      section { padding: 4.5rem 1.25rem; }
+
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+
+      .pullquote { position: static; }
+
+      .hero-stats {
+        position: static;
+        margin-top: 3rem;
+        justify-content: flex-start;
       }
 
-      body {
-        padding: 0 2rem;
+      .dark-stripe { padding: 4.5rem 1.25rem; }
+
+      footer {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: flex-start;
+        padding: 2rem 1.25rem;
       }
-    </style>
-  </head>
-  <body>
-    <div class="pure-g">
-      <div class="pure-u-1-1">
-        <p>
-          <a href="https://www.github.com/aaronpankratz">GitHub</a>
-          <a href="https://www.linkedin.com/in/aaronpankratz">LinkedIn</a>
-        </p>
-        <h1>Aaron Pankratz</h1>
-        <p>Hi! Welcome to my README!</p>
-        <p>I'm an engineer, I love to learn and build things! I'm passionate about software, data, systems, architecture, technical leadership, cross-functional collaboration, and mentorship.</p>
-        <h3>Education and Experience</h3>
-        <p>In my childhood, I started learning about computers from my father. He worked as a software engineer, and taught me about software, hardware, typing, the internet, and the basics of programming. My grandfather was an electrical engineer and taught me some of the basics of HTML and Javascript. In high school, I toyed around in C++ programming 'choose your own adventure' style text games.</p>
-        <p>I graduated from The University of Texas at Austin with a B.S. in Computer Science. I've spent the last 12+ years, working as a Software Engineer on full-stack web, backend systems, and mobile. I consider myself a strong generalist with a preference for backend. I've built apps from the ground up and helped scale systems to millions of users.</p>
-        </p>I have experience building applications for B2B and B2C. I've crafted software products in several different domains including sales, e-commerce, health, education, HR, recruiting, and fintech</p>
-        <p>In my roles I've been an individual contributor, technical leader, and mentor.</p>
-        <h3>Working style</h3>
-        <p>I'm proactive and prefer a culture with bias for action. I believe the best teams all have trust, conflict, commitment, accountability, and results. Psychological safety is important to me and an essential part of cultivating an innovative environment. I thrive when establishing consistent daily routines, creating stability, predictability, and trust. I value careful planning and preparation. I say what I mean and mean what I say.</p>
-        <h3>Personality</h3>
-        <p>My DISC Type is C, analyst. I tend to be an objective thinker and prioritize accuracy and results. I pay attention to small details and take a systematic aproach to solving problems. I naturally enjoy experimenting with many solutions to a problem. I get energy from order and organization.</p>
-        <p>My top five Gallup Clifton strengths are:</p>
-        <ul>
-            <li><p>Learner: Learning new skills and information is highly rewarding.</p></li>
-            <li><p>Achiever: I'm motivated by setting goals and then acheiving them.</p></li>
-            <li><p>Analytical: I seek out more information when making a decision.</p></li>
-            <li><p>Intellection: I enjoy discussing ideas, puzzles, problems, and strategies.</p></li>
-            <li><p>Self-Assurance: I stay positive and I'm confident in my abilities.</p></li>
-        </ul>
-        <h3>Some articles I've written</h3>
-        <a href="https://medium.com/@meliacapital">On software</a>
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ──────────────────────────────────── -->
+  <nav id="nav">
+    <a href="#" class="nav-brand">aaronpankratz.github.io</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#domains">Experience</a></li>
+      <li><a href="#strengths">Strengths</a></li>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="https://github.com/aaronpankratz" target="_blank" rel="noopener">GitHub ↗</a></li>
+      <li><a href="https://linkedin.com/in/aaronpankratz" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── HERO ─────────────────────────────────── -->
+  <div class="hero">
+    <span class="hero-ghost" aria-hidden="true">Aaron</span>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">Software Engineer</div>
+
+      <h1 class="hero-name">Aaron<br>Pankratz</h1>
+
+      <p class="hero-bio">
+        Engineer with 12+ years building full-stack web, backend systems,
+        and mobile applications. Passionate about architecture, scale,
+        and the humans behind the code.
+      </p>
+
+      <div class="hero-cta">
+        <a href="https://github.com/aaronpankratz" target="_blank" rel="noopener" class="btn btn-primary">GitHub</a>
+        <a href="https://linkedin.com/in/aaronpankratz" target="_blank" rel="noopener" class="btn">LinkedIn</a>
       </div>
     </div>
-  </body>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num" id="yrs">0</div>
+        <div class="stat-label">Years Building</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">7</div>
+        <div class="stat-label">Industry Domains</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Things to Learn</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint" aria-hidden="true">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </div>
+
+  <!-- ─── ABOUT ─────────────────────────────────── -->
+  <section id="about">
+    <div class="s-header reveal">
+      <span class="s-num">01</span>
+      <h2 class="s-title">Background</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="pullquote reveal">
+        <p class="pullquote-text">
+          "I'm an engineer. I love to learn and build things."
+        </p>
+        <p class="pullquote-source">Aaron Pankratz</p>
+      </div>
+
+      <div class="about-body reveal">
+        <p>
+          My path into software started at home. My father, a software engineer,
+          taught me computing from the ground up — hardware, networks, how programs
+          actually work. My grandfather, an electrical engineer, introduced me to HTML
+          and JavaScript. By high school I was writing C++ text adventure games purely
+          for the joy of it.
+        </p>
+        <p>
+          I studied Computer Science at The University of Texas at Austin and have
+          spent 12+ years as a software engineer across full-stack web, backend systems,
+          and mobile — building from zero and scaling to millions of users.
+        </p>
+        <p>
+          I'm a strong generalist with a deep preference for backend engineering.
+          I've served as an individual contributor, technical leader, and mentor across
+          B2B and B2C products in sales, e-commerce, healthcare, education, HR,
+          recruiting, and fintech.
+        </p>
+        <p>
+          I believe the best teams share trust, healthy conflict, commitment, and
+          accountability. Psychological safety isn't a talking point — it's the
+          prerequisite for any environment where real innovation can happen.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── DOMAINS ───────────────────────────────── -->
+  <section id="domains">
+    <div class="s-header reveal">
+      <span class="s-num">02</span>
+      <h2 class="s-title">Industry Experience</h2>
+    </div>
+
+    <div class="domain-grid stagger">
+      <div class="domain-cell">
+        <div class="domain-num">// 01</div>
+        <div class="domain-name">Sales Technology</div>
+      </div>
+      <div class="domain-cell">
+        <div class="domain-num">// 02</div>
+        <div class="domain-name">E-Commerce</div>
+      </div>
+      <div class="domain-cell">
+        <div class="domain-num">// 03</div>
+        <div class="domain-name">Healthcare</div>
+      </div>
+      <div class="domain-cell">
+        <div class="domain-num">// 04</div>
+        <div class="domain-name">Education</div>
+      </div>
+      <div class="domain-cell">
+        <div class="domain-num">// 05</div>
+        <div class="domain-name">HR & Recruiting</div>
+      </div>
+      <div class="domain-cell">
+        <div class="domain-num">// 06</div>
+        <div class="domain-name">Fintech</div>
+      </div>
+      <div class="domain-cell">
+        <div class="domain-num">// 07</div>
+        <div class="domain-name">Technical Leadership</div>
+      </div>
+      <div class="domain-cell">
+        <div class="domain-num">// 08</div>
+        <div class="domain-name">Mentorship</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── DARK STRIPE — technical breadth ─────── -->
+  <div class="dark-stripe">
+    <div class="s-header">
+      <span class="s-num">03</span>
+      <h2 class="s-title">Technical Breadth</h2>
+    </div>
+    <p class="dark-sub">Backend · Full-Stack Web · Mobile · Systems · Architecture · Culture</p>
+    <div class="tag-cloud stagger">
+      <span class="tag">Backend Systems</span>
+      <span class="tag">Full-Stack Web</span>
+      <span class="tag">Mobile Development</span>
+      <span class="tag">System Architecture</span>
+      <span class="tag">API Design</span>
+      <span class="tag">Distributed Systems</span>
+      <span class="tag">Database Design</span>
+      <span class="tag">Performance at Scale</span>
+      <span class="tag">Technical Strategy</span>
+      <span class="tag">Cross-Functional Collaboration</span>
+      <span class="tag">Engineering Culture</span>
+      <span class="tag">Mentorship & Growth</span>
+    </div>
+  </div>
+
+  <!-- ─── WORKING STYLE ─────────────────────────── -->
+  <section id="style">
+    <div class="s-header reveal">
+      <span class="s-num">04</span>
+      <h2 class="s-title">Working Style</h2>
+    </div>
+
+    <div class="principles stagger">
+      <div class="principle">
+        <div class="principle-icon">// Bias for Action</div>
+        <div class="principle-name">Proactive by Default</div>
+        <div class="principle-desc">Prefers a culture with momentum. Moves toward problems, not away from them.</div>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">// Planning</div>
+        <div class="principle-name">Preparation-First</div>
+        <div class="principle-desc">Values careful planning. Stability and predictability are features of a healthy team.</div>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">// Communication</div>
+        <div class="principle-name">Direct Communicator</div>
+        <div class="principle-desc">Says what they mean, means what they say. Directness is a form of respect.</div>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">// Safety</div>
+        <div class="principle-name">Psychological Safety</div>
+        <div class="principle-desc">Essential, not optional. Innovation requires an environment where people can speak freely.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CLIFTON STRENGTHS ─────────────────────── -->
+  <section id="strengths">
+    <div class="s-header reveal">
+      <span class="s-num">05</span>
+      <h2 class="s-title">Clifton Strengths</h2>
+    </div>
+
+    <div class="reveal">
+      <div class="strength-row">
+        <span class="strength-n">01</span>
+        <div>
+          <div class="strength-name">Learner</div>
+          <div class="strength-desc">Learning new skills and information is deeply rewarding. The process matters as much as the outcome.</div>
+        </div>
+        <span class="strength-badge">Cognitive</span>
+      </div>
+
+      <div class="strength-row">
+        <span class="strength-n">02</span>
+        <div>
+          <div class="strength-name">Achiever</div>
+          <div class="strength-desc">Motivated by setting goals and reaching them. Finds satisfaction in consistent, measurable progress.</div>
+        </div>
+        <span class="strength-badge">Executing</span>
+      </div>
+
+      <div class="strength-row">
+        <span class="strength-n">03</span>
+        <div>
+          <div class="strength-name">Analytical</div>
+          <div class="strength-desc">Seeks data before deciding. Thinks in systems, patterns, and evidence — detail-oriented by nature.</div>
+        </div>
+        <span class="strength-badge">Cognitive</span>
+      </div>
+
+      <div class="strength-row">
+        <span class="strength-n">04</span>
+        <div>
+          <div class="strength-name">Intellection</div>
+          <div class="strength-desc">Energized by discussing ideas, puzzles, and strategy. Loves to think deeply and connect distant dots.</div>
+        </div>
+        <span class="strength-badge">Cognitive</span>
+      </div>
+
+      <div class="strength-row">
+        <span class="strength-n">05</span>
+        <div>
+          <div class="strength-name">Self-Assurance</div>
+          <div class="strength-desc">Stays positive and confident under uncertainty. Trusts their own judgment when others hesitate.</div>
+        </div>
+        <span class="strength-badge">Influencing</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WRITING ────────────────────────────────── -->
+  <section id="writing">
+    <div class="s-header reveal">
+      <span class="s-num">06</span>
+      <h2 class="s-title">Writing</h2>
+    </div>
+
+    <a href="https://medium.com/@meliacapital" target="_blank" rel="noopener" class="writing-link reveal">
+      <span class="writing-glyph">✦</span>
+      <div>
+        <div class="writing-meta">Medium · @meliacapital</div>
+        <div class="writing-title">On Software Engineering</div>
+      </div>
+      <span class="writing-arrow">→</span>
+    </a>
+  </section>
+
+  <!-- ─── FOOTER ─────────────────────────────────── -->
+  <footer>
+    <span class="footer-name">Aaron Pankratz</span>
+    <div class="footer-right">
+      <ul class="footer-links">
+        <li><a href="https://github.com/aaronpankratz" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://linkedin.com/in/aaronpankratz" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://medium.com/@meliacapital" target="_blank" rel="noopener">Medium</a></li>
+      </ul>
+      <span class="footer-year" id="yr"></span>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll shadow
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    // Footer year
+    document.getElementById('yr').textContent = '© ' + new Date().getFullYear();
+
+    // Years counter animation
+    const yrsEl = document.getElementById('yrs');
+    let started = false;
+    function runCounter() {
+      if (started) return;
+      started = true;
+      let n = 0;
+      const target = 12;
+      const tick = () => {
+        n++;
+        yrsEl.textContent = n < target ? n : target + '+';
+        if (n < target) requestAnimationFrame(tick);
+      };
+      setTimeout(() => requestAnimationFrame(tick), 600);
+    }
+    // Start counter once hero is visible (on load)
+    window.addEventListener('load', runCounter);
+
+    // Scroll reveal
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal, .stagger').forEach(el => revealObs.observe(el));
+  </script>
+</body>
 </html>
